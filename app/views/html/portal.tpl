@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Portal · Estante</title><link rel="stylesheet" href="/static/css/style.css"></head>
-<body><main class="login"><span class="tag">ESTANTE / BMVC</span><h1>Sua próxima leitura começa aqui.</h1><p>Entre no portal para consultar o catálogo de livros.</p>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Portal · JAM-DF</title><link rel="stylesheet" href="/static/css/style.css"></head>
+<body><main class="login"><span class="tag">JAM-DF / SEGURANÇA ELETRÔNICA</span><h1>Segurança com organização e confiança.</h1><p>Entre no portal JAM-DF para consultar os serviços de segurança eletrônica.</p>
 % if error:
 <p role="alert" class="error">{{error}}</p>
 % end

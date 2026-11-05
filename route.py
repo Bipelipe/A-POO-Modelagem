@@ -20,9 +20,9 @@ def create_app(db_path=None):
     app.post('/portal')(ctl.login)
     app.post('/logout')(ctl.logout)
     app.get('/banco')(lambda: ctl.render('banco'))
-    app.post('/banco')(ctl.write_book)
-    app.put('/banco/<book_id:int>')(ctl.write_book)
-    app.delete('/banco/<book_id:int>')(ctl.delete_book)
+    app.post('/banco')(ctl.write_service)
+    app.put('/banco/<service_id:int>')(ctl.write_service)
+    app.delete('/banco/<service_id:int>')(ctl.delete_service)
     return app
 
 

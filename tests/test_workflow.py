@@ -39,7 +39,7 @@ class WorkflowTest(unittest.TestCase):
 
     def test_authentication_and_logout(self):
         self.assertEqual(self.call('GET', '/banco')[0]['status'], 303)
-        self.assertEqual(self.call('POST', '/banco', {'titulo': 'X', 'autor': 'Y'})[0]['status'], 401)
+        self.assertEqual(self.call('POST', '/banco', {'nome': 'X', 'tipo': 'Y'})[0]['status'], 401)
         self.assertEqual(self.call('POST', '/portal', {'username': 'admin', 'password': 'errada'}, True)[0]['status'], 401)
         self.login()
         self.assertEqual(self.call('GET', '/banco')[0]['status'], 200)
@@ -48,23 +48,23 @@ class WorkflowTest(unittest.TestCase):
 
     def test_crud_validation_and_persistence(self):
         self.login()
-        self.assertEqual(self.call('POST', '/banco', {'titulo': ' ', 'autor': 'X'})[0]['status'], 400)
-        result, body = self.call('POST', '/banco', {'titulo': '<script>Oi</script>', 'autor': 'José'})
+        self.assertEqual(self.call('POST', '/banco', {'nome': ' ', 'tipo': 'X'})[0]['status'], 400)
+        result, body = self.call('POST', '/banco', {'nome': '<script>Oi</script>', 'tipo': 'Consultoria'})
         self.assertEqual(result['status'], 201)
-        book_id = json.loads(body)['id']
+        service_id = json.loads(body)['id']
         html = self.call('GET', '/banco')[1]
         self.assertIn('&lt;script&gt;', html)
         self.assertNotIn('<script>Oi</script>', html)
         self.app = create_app(self.path)
         self.cookie = ''
         self.login()
-        self.assertIn('José', self.call('GET', '/banco')[1])
-        self.assertEqual(self.call('PUT', f'/banco/{book_id}', {'titulo': 'Dom Casmurro', 'autor': 'Machado de Assis'})[0]['status'], 200)
-        self.assertIn('Dom Casmurro', self.call('GET', '/banco')[1])
-        self.assertEqual(self.call('DELETE', f'/banco/{book_id}')[0]['status'], 204)
-        self.assertNotIn('Dom Casmurro', self.call('GET', '/banco')[1])
-        self.assertEqual(self.call('DELETE', f'/banco/{book_id}')[0]['status'], 404)
-        self.assertEqual(self.call('PUT', f'/banco/{book_id}', {'titulo': 'A', 'autor': 'B'})[0]['status'], 404)
+        self.assertIn('Consultoria', self.call('GET', '/banco')[1])
+        self.assertEqual(self.call('PUT', f'/banco/{service_id}', {'nome': 'Instalação de câmeras', 'tipo': 'Instalação'})[0]['status'], 200)
+        self.assertIn('Instalação de câmeras', self.call('GET', '/banco')[1])
+        self.assertEqual(self.call('DELETE', f'/banco/{service_id}')[0]['status'], 204)
+        self.assertNotIn('Instalação de câmeras', self.call('GET', '/banco')[1])
+        self.assertEqual(self.call('DELETE', f'/banco/{service_id}')[0]['status'], 404)
+        self.assertEqual(self.call('PUT', f'/banco/{service_id}', {'nome': 'A', 'tipo': 'B'})[0]['status'], 404)
 
 
 if __name__ == '__main__':

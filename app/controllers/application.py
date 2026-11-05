@@ -43,9 +43,9 @@ class Application:
     def banco(self):
         user = self.require_user()
         response.set_header('Cache-Control', 'no-store')
-        return template('banco', template_lookup=[str(self.views)], username=user, livros=self.models.list_books())
+        return template('banco', template_lookup=[str(self.views)], username=user, servicos=self.models.list_services())
 
-    def write_book(self, book_id=None):
+    def write_service(self, service_id=None):
         self.require_user(api=True)
         if request.content_type.split(';')[0] == 'application/json':
             try:
@@ -53,25 +53,25 @@ class Application:
             except HTTPError:
                 raise HTTPError(400, 'JSON inválido.')
         else:
-            data = {key: request.forms.getunicode(key) for key in ('titulo', 'autor')}
+            data = {key: request.forms.getunicode(key) for key in ('nome', 'tipo')}
         if not isinstance(data, dict):
-            raise HTTPError(400, 'Envie titulo e autor.')
-        values = [data.get(key) for key in ('titulo', 'autor')]
+            raise HTTPError(400, 'Envie nome e tipo.')
+        values = [data.get(key) for key in ('nome', 'tipo')]
         if any(not isinstance(value, str) or not value.strip() or len(value.strip()) > 200 for value in values):
-            raise HTTPError(400, 'Título e autor são obrigatórios e devem ter até 200 caracteres.')
-        titulo, autor = (value.strip() for value in values)
-        if book_id is None:
-            book = self.models.create_book(titulo, autor)
+            raise HTTPError(400, 'Nome do serviço e tipo são obrigatórios e devem ter até 200 caracteres.')
+        nome, tipo = (value.strip() for value in values)
+        if service_id is None:
+            service = self.models.create_service(nome, tipo)
             response.status = 201
             response.set_header('Location', '/banco')
-            return asdict(book)
-        if not self.models.update_book(book_id, titulo, autor):
-            raise HTTPError(404, 'Livro não encontrado.')
-        return {'id': book_id, 'titulo': titulo, 'autor': autor}
+            return asdict(service)
+        if not self.models.update_service(service_id, nome, tipo):
+            raise HTTPError(404, 'Serviço não encontrado.')
+        return {'id': service_id, 'nome': nome, 'tipo': tipo}
 
-    def delete_book(self, book_id):
+    def delete_service(self, service_id):
         self.require_user(api=True)
-        if not self.models.delete_book(book_id):
-            raise HTTPError(404, 'Livro não encontrado.')
+        if not self.models.delete_service(service_id):
+            raise HTTPError(404, 'Serviço não encontrado.')
         response.status = 204
         return ''

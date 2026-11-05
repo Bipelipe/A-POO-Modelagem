@@ -5,7 +5,7 @@ import sqlite3
 import time
 from pathlib import Path
 
-from app.models.livro import Livro
+from app.models.servico import Servico
 from app.models.user_account import User_account
 
 
@@ -20,9 +20,9 @@ class DataRecord:
             db.executescript('''
                 CREATE TABLE IF NOT EXISTS users (
                     username TEXT PRIMARY KEY, password_hash TEXT NOT NULL, salt TEXT NOT NULL);
-                CREATE TABLE IF NOT EXISTS livros (
+                CREATE TABLE IF NOT EXISTS servicos (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    titulo TEXT NOT NULL, autor TEXT NOT NULL);
+                    nome TEXT NOT NULL, tipo TEXT NOT NULL);
             ''')
             if not db.execute('SELECT 1 FROM users LIMIT 1').fetchone():
                 salt = secrets.token_hex(16)
@@ -61,20 +61,20 @@ class DataRecord:
     def logout(self, token):
         self.sessions.pop(token, None)
 
-    def list_books(self):
+    def list_services(self):
         with self.connect() as db:
-            return [Livro(**dict(row)) for row in db.execute('SELECT * FROM livros ORDER BY id')]
+            return [Servico(**dict(row)) for row in db.execute('SELECT * FROM servicos ORDER BY id')]
 
-    def create_book(self, titulo, autor):
+    def create_service(self, nome, tipo):
         with self.connect() as db:
-            cursor = db.execute('INSERT INTO livros (titulo, autor) VALUES (?, ?)', (titulo, autor))
-            return Livro(cursor.lastrowid, titulo, autor)
+            cursor = db.execute('INSERT INTO servicos (nome, tipo) VALUES (?, ?)', (nome, tipo))
+            return Servico(cursor.lastrowid, nome, tipo)
 
-    def update_book(self, book_id, titulo, autor):
+    def update_service(self, service_id, nome, tipo):
         with self.connect() as db:
-            return db.execute('UPDATE livros SET titulo=?, autor=? WHERE id=?',
-                              (titulo, autor, book_id)).rowcount > 0
+            return db.execute('UPDATE servicos SET nome=?, tipo=? WHERE id=?',
+                              (nome, tipo, service_id)).rowcount > 0
 
-    def delete_book(self, book_id):
+    def delete_service(self, service_id):
         with self.connect() as db:
-            return db.execute('DELETE FROM livros WHERE id=?', (book_id,)).rowcount > 0
+            return db.execute('DELETE FROM servicos WHERE id=?', (service_id,)).rowcount > 0

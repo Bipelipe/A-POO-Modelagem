@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class Livro:
+class Servico:
     id: int
-    titulo: str
-    autor: str
+    nome: str
+    tipo: str
