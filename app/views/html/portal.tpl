@@ -9,7 +9,7 @@
 <body class="portal-page">
   <main class="login-layout">
     <section class="brand-panel" aria-labelledby="brand-title">
-      <a class="brand" href="/portal"><span class="brand-mark" aria-hidden="true">J</span> JAM-DF</a>
+      <a class="brand" href="/portal">JAM-DF</a>
       <div class="brand-message">
         <p class="eyebrow">SEGURANÇA ELETRÔNICA</p>
         <h1 id="brand-title">Proteção em cada detalhe.</h1>

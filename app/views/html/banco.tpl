@@ -8,7 +8,7 @@
 </head>
 <body class="dashboard-page">
   <aside class="sidebar">
-    <a class="brand" href="/banco"><span class="brand-mark" aria-hidden="true">J</span> JAM-DF</a>
+    <a class="brand" href="/banco">JAM-DF</a>
     <p class="sidebar-caption">PORTAL DO CLIENTE</p>
     <nav aria-label="Menu principal"><a class="nav-active" href="/banco" aria-current="page"><span aria-hidden="true">▦</span> Serviços</a></nav>
     <div class="sidebar-bottom"><span class="status-dot" aria-hidden="true"></span> Segurança eletrônica</div>
